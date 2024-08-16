@@ -18,8 +18,8 @@ builder.Services.AddSwaggerGen(opt =>
 {
     opt.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 });
-builder.Services.AddTransient<IDataRepository, DataRepository>();
-builder.Services.AddTransient<IHomeService, HomeService>();
+builder.Services.AddTransient<IElementRepository, ElementRepository>();
+builder.Services.AddTransient<IElementService, ElementService>();
 
 var app = builder.Build();
 app.UseRouting();
