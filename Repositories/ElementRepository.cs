@@ -5,10 +5,11 @@ namespace dotnet_api.Repositories;
 public class ElementRepository(): IElementRepository
 {
     private static readonly List<Element> Elements = [
-        new Element { Str = "Element 1" },
-        new Element { Str = "Element 2" },
-        new Element { Str = "Element 3" }
+        new Element { Id = 1, Str = "Element 1" },
+        new Element { Id = 2, Str = "Element 2" },
+        new Element { Id = 3, Str = "Element 3" }
     ];
+    private static int lastId = 3;
 
     public IEnumerable<Element> Get()
     {
@@ -17,6 +18,8 @@ public class ElementRepository(): IElementRepository
     
     public Element Create(Element element)
     {
+        element.Id = lastId + 1;
+        lastId++;
         Elements.Add(element);
         return element;
     }
