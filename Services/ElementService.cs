@@ -17,7 +17,8 @@ public class ElementService(IElementRepository elementRepository): IElementServi
     {
         return _elementRepository.Create(new Element
         {
-            Str = dto.Str
+            Str = dto.Str,
+            Status = ElementStatus.Todo
         });
     }
 }

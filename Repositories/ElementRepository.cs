@@ -5,9 +5,9 @@ namespace dotnet_api.Repositories;
 public class ElementRepository(): IElementRepository
 {
     private static readonly List<Element> Elements = [
-        new Element { Id = 1, Str = "Element 1" },
-        new Element { Id = 2, Str = "Element 2" },
-        new Element { Id = 3, Str = "Element 3" }
+        new Element { Id = 1, Str = "Element 1", Status = ElementStatus.Todo},
+        new Element { Id = 2, Str = "Element 2", Status = ElementStatus.Doing},
+        new Element { Id = 3, Str = "Element 3", Status = ElementStatus.Done}
     ];
     private static int lastId = 3;
 
