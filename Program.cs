@@ -1,7 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using dotnet_api.Jobs;
 using dotnet_api.Repositories;
 using dotnet_api.Services;
+using Hangfire;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.OpenApi.Models;
 
@@ -29,6 +31,10 @@ builder.Services.AddSwaggerGen(opt =>
 });
 builder.Services.AddTransient<IElementRepository, ElementRepository>();
 builder.Services.AddTransient<IElementService, ElementService>();
+builder.Services.AddTransient<IScrapperJob, ScrapperJob>();
+builder.Services.AddHangfire(c => c.UseInMemoryStorage());
+builder.Services.AddHangfireServer();
+var configuration = builder.Configuration;
 
 var app = builder.Build();
 app.UseRouting();
@@ -39,4 +45,7 @@ app.UseSwaggerUI(opt =>
     opt.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
 });
 app.UseCors(cors);
+app.UseHangfireDashboard("/hangfire");
+string[] stocks = configuration?["Stocks"].Split(',');
+RecurringJob.AddOrUpdate<IScrapperJob>("scrapper", job => job.Run(stocks), Cron.Minutely);
 app.Run();
