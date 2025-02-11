@@ -24,11 +24,11 @@ public class ScrapperJob(IStockRepository stockRepository, IHubConnectionHandler
             var doc = web.Load(url + isin + "-XPAR");
             var parsedStock = new Stock()
             {
-                Name = doc.GetElementbyId("header-instrument-name").InnerText.Trim('\t').Trim('\n'),
+                Name = doc.GetElementbyId("header-instrument-name").InnerText.Trim(['\t','\n']),
                 Isin = isin,
                 Exchange = "Euronext Paris",
-                Variation = doc.DocumentNode.SelectNodes("//span[@class='text-ui-grey-1 mr-2']")[1].InnerText,
-                LastPrice = doc.GetElementbyId("header-instrument-price").InnerText
+                Variation = double.Parse(doc.DocumentNode.SelectNodes("//span[@class='text-ui-grey-1 mr-2']")[1].InnerText.Trim(['(', ')', '+', '%'])),
+                LastPrice = double.Parse(doc.GetElementbyId("header-instrument-price").InnerText)
             };
             stockRepository.Upsert(parsedStock);
             await hubConnectionHandler.HubConnection.SendAsync("NewMessage", parsedStock);

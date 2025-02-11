@@ -5,6 +5,6 @@ public struct Stock
     public string Name { get; set; }
     public string Isin { get; set; }
     public string Exchange { get; set; }
-    public string Variation { get; set; }
-    public string LastPrice { get; set; }
+    public double Variation { get; set; }
+    public double LastPrice { get; set; }
 }
