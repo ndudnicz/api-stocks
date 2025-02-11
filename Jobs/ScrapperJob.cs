@@ -17,6 +17,7 @@ public class ScrapperJob(IStockRepository stockRepository, IHubConnectionHandler
             throw new ArgumentNullException(nameof(stocksIsin));
         var url = "https://live.euronext.com/fr/ajax/getDetailedQuote/";
         var web = new HtmlWeb();
+        var parsedStocks = new List<Stock>();
         foreach (var isin in stocksIsin)
         {
             Console.WriteLine("fetching stock data for " + isin);
@@ -31,7 +32,8 @@ public class ScrapperJob(IStockRepository stockRepository, IHubConnectionHandler
                 LastPrice = double.Parse(doc.GetElementbyId("header-instrument-price").InnerText)
             };
             stockRepository.Upsert(parsedStock);
-            await hubConnectionHandler.HubConnection.SendAsync("NewMessage", parsedStock);
+            parsedStocks.Add(parsedStock);
         }
+        await hubConnectionHandler.HubConnection.SendAsync("NewMessage", parsedStocks);
     }
 }

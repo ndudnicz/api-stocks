@@ -4,7 +4,7 @@ namespace dotnet_api.Repositories;
 
 public class StockRepository(): IStockRepository
 {
-    private static readonly Dictionary<string, Stock> StocksDict = new Dictionary<string, Stock>();
+    private static readonly Dictionary<string, Stock> StocksDict = new();
 
     public IEnumerable<Stock> Get()
     {
@@ -17,6 +17,7 @@ public class StockRepository(): IStockRepository
         {
             existingStock.LastPrice = stock.LastPrice;
             existingStock.Variation = stock.Variation;
+            StocksDict[stock.Isin] = existingStock;
             return existingStock;
         }
         StocksDict.Add(stock.Isin, stock);

@@ -5,7 +5,7 @@ namespace dotnet_api.Hubs;
 
 public class MessageHub : Hub
 {
-    public async Task NewMessage(Stock msg) =>
+    public async Task NewMessage(IEnumerable<Stock> msg) =>
         await Clients.All.SendAsync("messageReceived", msg);
 
     public async Task TestMessage(string str)
