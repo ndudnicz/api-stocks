@@ -28,8 +28,8 @@ public class ScrapperJob(IStockRepository stockRepository, IHubConnectionHandler
                 Name = doc.GetElementbyId("header-instrument-name").InnerText.Trim(['\t','\n']),
                 Isin = isin,
                 Exchange = "Euronext Paris",
-                Variation = double.Parse(doc.DocumentNode.SelectNodes("//span[@class='text-ui-grey-1 mr-2']")[1].InnerText.Trim(['(', ')', '+', '%'])),
-                LastPrice = double.Parse(doc.GetElementbyId("header-instrument-price").InnerText)
+                Variation = double.Parse(doc.DocumentNode.SelectNodes("//span[@class='text-ui-grey-1 mr-2']")[1].InnerText.Trim(['(', ')', '+', '%']).Replace(',', '.')),
+                LastPrice = double.Parse(doc.GetElementbyId("header-instrument-price").InnerText.Replace(',', '.'))
             };
             stockRepository.Upsert(parsedStock);
             parsedStocks.Add(parsedStock);
