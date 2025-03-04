@@ -13,6 +13,7 @@ public class ScrapperJob(IStockRepository stockRepository, IHubConnectionHandler
 {
     public async Task Run(string[] stocksIsin)
     {
+        Console.WriteLine($"[{DateTime.UtcNow.ToString("o")}] ScrapperJob running");
         if (stocksIsin is null)
             throw new ArgumentNullException(nameof(stocksIsin));
         var url = "https://live.euronext.com/fr/ajax/getDetailedQuote/";
@@ -35,5 +36,6 @@ public class ScrapperJob(IStockRepository stockRepository, IHubConnectionHandler
             parsedStocks.Add(parsedStock);
         }
         await hubConnectionHandler.HubConnection.SendAsync("NewMessage", parsedStocks);
+        Console.WriteLine($"[{DateTime.UtcNow.ToString("o")}] ScrapperJob done");
     }
 }
