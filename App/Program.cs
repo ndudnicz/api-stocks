@@ -34,7 +34,7 @@ builder.Services.AddSingleton<IHubConnectionHandler>(hubConnectionHandler);
 
 var app = builder.Build();
 app.UseCors(b =>
-        b.WithOrigins(["http://localhost:4200", "http://localhost:5173"])
+        b.WithOrigins(["http://localhost:4200", "http://localhost:5173", "http://localhost:3000"])
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()  // Add AllowCredentials for SignalR to work with cookies or authorization headers
